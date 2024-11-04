@@ -151,8 +151,8 @@ DATASET <- rbind.data.frame(select(PI,-Localizacion,-Codigo.localizacion), CONTR
 # Cancer datasets----
 
 CANCER.PI<-subset(PI,PI$CANCER!="No")
-NoCANCER.PI<-subset(PI,PI$CANCER=="No")
-NoCANCER.PI<-select(NoCANCER.PI,-CANCER)
+NOCANCER.PI<-subset(PI,PI$CANCER=="No")
+NOCANCER.PI<-select(NOCANCER.PI,-CANCER)
 table(PI$CANCER)
 
 table(PI$CANCER.A.D.)
