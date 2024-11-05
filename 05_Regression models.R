@@ -118,7 +118,7 @@ step(object = modelo, direction = "backward", trace = 0)
 modelo<-glm(CANCER ~BEBEDOR + ALELO1.SCA1 + ALELO1.SCA2, data=PARKLM, family=binomial())
 summary(modelo)
 
-#Modelo cuadrático
+#Quadratic model
 mod<-glm(CANCER ~ CODIGO.HTT+ALELO.1+I(ALELO.1^2)+ALELO.2+I(ALELO.2^2)+ALELO.1:ALELO.2+CODIGO.SCA1 + ALELO1.SCA1+I(ALELO1.SCA1^2)+ALELO2.SCA1+I(ALELO2.SCA1^2)+ALELO1.SCA1:ALELO2.SCA1+CODIGO.SCA2 + ALELO1.SCA2+I(ALELO1.SCA2^2)+ALELO2.SCA2+I(ALELO2.SCA2^2)+ALELO1.SCA2:ALELO2.SCA2, data = na.omit(PARKLM), family = binomial)
 summary(mod)
 step(object = mod, direction = "backward", trace = 0)
@@ -132,16 +132,14 @@ PARKLM<-PI %>%
 modelo<-glm(CANCER ~CODIGO.HTT + ALELO.1+I(ALELO.1^2)+ALELO.2+I(ALELO.2^2)+ALELO.1:ALELO.2, data=PARKLM, family=binomial())
 summary(modelo)
 step(object = modelo, direction = "backward", trace = 0)
-##  glm(formula = CANCER ~ 1, family = binomial(), data = PARKLM)
 
-#SEPARACION POR SEXO
-# Subconjunto para SEXO Male
+#Sex distribution
+# Male dataset
 modelo_Male <- glm(CANCER ~ CODIGO.HTT+ALELO.1+I(ALELO.1^2)+ALELO.2+I(ALELO.2^2)+ALELO.1:ALELO.2, data = filter(PARKLM, SEXO == "Male"), family = binomial())
 summary(modelo_Male)
 step(object = modelo_Male, direction = "backward", trace = 0)
 
-
-# Subconjunto para SEXO Female
+# Female dataset
 modelo_Female <- glm(CANCER ~ CODIGO.HTT +  ALELO.1+I(ALELO.1^2)+ALELO.2+I(ALELO.2^2)+ALELO.1:ALELO.2 , data = filter(PARKLM, SEXO == "Female"), family = binomial())
 summary(modelo_Female)
 step(object = modelo_Female, direction = "backward", trace = 0)
@@ -164,10 +162,10 @@ OR <- exp(coef(modelo))
 confint_OR <- exp(confint(modelo))
 print(OR)
 print(confint_OR)
-library(lmtest)
 lrtest(modelo)
-#SEPARACION POR SEXO
-# Subconjunto para SEXO Male
+
+#Sex distribution
+# Male dataset
 modelo_Male <- glm(CANCER ~ CODIGO.SCA1+ ALELO1.SCA1+I(ALELO1.SCA1^2)+ALELO2.SCA1+I(ALELO2.SCA1^2)+ALELO1.SCA1:ALELO2.SCA1, data = filter(PARK_LM, SEXO == "Male"), family = binomial())
 summary(modelo_Male)
 step(object = modelo_Male, direction = "backward", trace = 0)
@@ -177,7 +175,7 @@ summary(mod)
 anova(mod, update(mod, ~1), test="Chisq")
 confint(mod)
 
-# Subconjunto para SEXO Female
+# Female dataset
 modelo_Female <- glm(CANCER ~ CODIGO.SCA1+ALELO1.SCA1+I(ALELO1.SCA1^2)+ALELO2.SCA1+I(ALELO2.SCA1^2)+ALELO1.SCA1:ALELO2.SCA1, data = filter(PARK_LM, SEXO == "Female"), family = binomial())
 summary(modelo_Female)
 step(object = modelo_Female, direction = "backward", trace = 0)
@@ -198,8 +196,8 @@ mod<-glm(CANCER ~ ALELO1.SCA2 + ALELO2.SCA2 + I(ALELO2.SCA2^2), data=PI_LM, fami
 summary(mod)
 anova(mod, update(mod, ~1), test="Chisq") #0.008559 
 
-#SEPARACION POR SEXO
-# Subconjunto para SEXO Male
+#Sex distribution
+# Male dataset
 modelo_Male <- glm(CANCER ~ CODIGO.SCA2 +ALELO1.SCA2+I(ALELO1.SCA2^2)+ALELO2.SCA2+I(ALELO2.SCA2^2)+ALELO1.SCA2:ALELO2.SCA2, data = filter(PI_LM, SEXO == "Male"), family = binomial())
 summary(modelo_Male)
 step(object = modelo_Male, direction = "backward", trace = 0)
@@ -207,9 +205,8 @@ summary(glm(formula = CANCER ~ CODIGO.SCA2 + ALELO1.SCA2 + ALELO2.SCA2 +
               I(ALELO2.SCA2^2), family = binomial(), 
             data = filter(PI_LM, SEXO == "Male")))
 
-# Subconjunto para SEXO Female
+# Female dataset
 modelo_Female <- glm(CANCER ~ CODIGO.SCA2 +ALELO1.SCA2+I(ALELO1.SCA2^2)+ALELO2.SCA2+I(ALELO2.SCA2^2)+ALELO1.SCA2:ALELO2.SCA2, data = filter(PI_LM, SEXO == "Female"), family = binomial())
 summary(modelo_Female)
-library(car)
 vif(modelo_Female)
 step(object = modelo_Female, direction = "backward", trace = 0)
