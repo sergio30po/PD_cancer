@@ -1,6 +1,6 @@
 These datasets include various clinical and demographic variables for subjects with idiopathic Parkinson's disease (iPD) and Controls, as well as genetic markers and lifestyle factors, structured as follows:
 
-**Demographic Variables:**
+#Demographic Variables:
 
 Sex: 1 = Male, 2 = Female
 
