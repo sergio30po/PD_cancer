@@ -18,6 +18,7 @@ mod<-glm(formula = PATOLOGIA ~  ALELO.1 + I(ALELO.1^2) + ALELO.2 +
 summary(mod)
 lrtest(mod)
 confint(mod)
+exp(coef(mod))
 
 #HTT PD risk model----
 DATASETLM <- DATASET %>%
@@ -31,6 +32,7 @@ mod<-glm(formula = PATOLOGIA ~  ALELO.2 + I(ALELO.2^2), family = binomial,
 summary(mod)
 lrtest(mod)
 confint(mod)
+exp(coef(mod))
 
 #Sex distribution
 # Male dataset
@@ -40,6 +42,8 @@ step(object = modelo_Male, direction = "backward", trace = 0)
 mod<-glm(PATOLOGIA ~ ALELO.1 + I(ALELO.1^2) + 
            ALELO.2 + I(ALELO.2^2), data = filter(DATASETLM, SEXO == "Male"), family = binomial())
 summary(mod)
+confint(mod)
+exp(coef(mod))
 # Female dataset
 modelo_Female <- glm(PATOLOGIA ~ ALELO.1+I(ALELO.1^2)+ALELO.2+I(ALELO.2^2)+ALELO.1:ALELO.2, data = filter(DATASETLM, SEXO == "Female"), family = binomial())
 summary(modelo_Female)
@@ -47,6 +51,8 @@ step(object = modelo_Female, direction = "backward", trace = 0)
 mod<-glm(PATOLOGIA ~ ALELO.2 + I(ALELO.2^2), family = binomial(), 
          data = filter(DATASETLM, SEXO == "Female"))
 summary(mod)
+confint(mod)
+exp(coef(mod))
 
 #ATXN1 PD risk model----
 DATASETLM <- DATASET %>%
@@ -61,7 +67,7 @@ mod<-glm(formula = PATOLOGIA ~ ALELO1.SCA1 + I(ALELO1.SCA1^2) +
 summary(mod)
 lrtest(mod)
 confint(mod)
-
+exp(coef(mod))
 #Sex distribution
 # Male dataset
 modelo_Male <- glm(PATOLOGIA ~  ALELO1.SCA1+I(ALELO1.SCA1^2)+ALELO2.SCA1+I(ALELO2.SCA1^2)+ALELO1.SCA1:ALELO2.SCA1, data = filter(DATASETLM, SEXO == "Male"), family = binomial())
@@ -69,6 +75,8 @@ summary(modelo_Male)
 step(object = modelo_Male, direction = "backward", trace = 0)
 mod<-glm(PATOLOGIA ~ ALELO1.SCA1 + ALELO2.SCA1 + ALELO1.SCA1:ALELO2.SCA1, data = filter(DATASETLM, SEXO == "Male"), family = binomial())
 summary(mod)
+confint(mod)
+exp(coef(mod))
 # Female dataset
 modelo_Female <- glm(PATOLOGIA ~  ALELO1.SCA1+I(ALELO1.SCA1^2)+ALELO2.SCA1+I(ALELO2.SCA1^2)+ALELO1.SCA1:ALELO2.SCA1, data = filter(DATASETLM, SEXO == "Female"), family = binomial())
 summary(modelo_Female)
@@ -76,6 +84,8 @@ step(object = modelo_Female, direction = "backward", trace = 0)
 mod<-glm(PATOLOGIA ~I(ALELO1.SCA1^2) + I(ALELO2.SCA1^2), family = binomial(), 
          data = filter(DATASETLM, SEXO == "Female"))
 summary(mod)
+confint(mod)
+exp(coef(mod))
 
 #ATXN2 PD risk model----
 
@@ -91,7 +101,7 @@ mod<-glm(formula = PATOLOGIA ~ALELO1.SCA2 + I(ALELO1.SCA2^2) +
 summary(mod)
 lrtest(mod)
 confint(mod)
-
+exp(coef(mod))
 #Sex distribution
 # Male dataset
 modelo_Male <- glm(PATOLOGIA ~  ALELO1.SCA2+I(ALELO1.SCA2^2)+ALELO2.SCA2+I(ALELO2.SCA2^2)+ALELO1.SCA2:ALELO2.SCA2, data = filter(DATASETLM, SEXO == "Male"), family = binomial())
@@ -100,6 +110,8 @@ step(object = modelo_Male, direction = "backward", trace = 0)
 mod<-glm(PATOLOGIA ~ALELO1.SCA2 + I(ALELO1.SCA2^2) + 
            ALELO2.SCA2 + ALELO1.SCA2:ALELO2.SCA2, data = filter(DATASETLM, SEXO == "Male"), family = binomial())
 summary(mod)
+confint(mod)
+exp(coef(mod))
 #Female dataset
 modelo_Female <- glm(PATOLOGIA ~  ALELO1.SCA2+I(ALELO1.SCA2^2)+ALELO2.SCA2+I(ALELO2.SCA2^2)+ALELO1.SCA2:ALELO2.SCA2, data = filter(DATASETLM, SEXO == "Female"), family = binomial())
 summary(modelo_Female)
@@ -107,7 +119,8 @@ step(object = modelo_Female, direction = "backward", trace = 0)
 mod<-glm(PATOLOGIA ~ ALELO1.SCA2 + I(ALELO1.SCA2^2), family = binomial(), 
          data = filter(DATASETLM, SEXO == "Female"))
 summary(mod)
-
+confint(mod)
+exp(coef(mod))
 
 ##Cancer risk (binomial)----
 
@@ -117,6 +130,8 @@ summary(modelo)
 step(object = modelo, direction = "backward", trace = 0)
 modelo<-glm(CANCER ~BEBEDOR + ALELO1.SCA1 + ALELO1.SCA2, data=PARKLM, family=binomial())
 summary(modelo)
+confint(modelo)
+exp(coef(modelo))
 
 #Quadratic model
 mod<-glm(CANCER ~ CODIGO.HTT+ALELO.1+I(ALELO.1^2)+ALELO.2+I(ALELO.2^2)+ALELO.1:ALELO.2+CODIGO.SCA1 + ALELO1.SCA1+I(ALELO1.SCA1^2)+ALELO2.SCA1+I(ALELO2.SCA1^2)+ALELO1.SCA1:ALELO2.SCA1+CODIGO.SCA2 + ALELO1.SCA2+I(ALELO1.SCA2^2)+ALELO2.SCA2+I(ALELO2.SCA2^2)+ALELO1.SCA2:ALELO2.SCA2, data = na.omit(PARKLM), family = binomial)
@@ -124,6 +139,8 @@ summary(mod)
 step(object = mod, direction = "backward", trace = 0)
 mod2<-glm(formula = CANCER ~ ALELO.1 + I(ALELO.1^2) + ALELO1.SCA2, family = binomial, data = PARKLM)
 summary(mod2)
+confint(mod2)
+exp(coef(mod2))
 
 #HTT Cancer risk model----
 PARKLM<-PI %>%
@@ -147,6 +164,8 @@ mod2<-glm(formula = CANCER ~ CODIGO.HTT+ALELO.2 + I(ALELO.2^2), family = binomia
           data = filter(PARKLM, SEXO == "Female"))
 summary(mod2)
 anova(mod2, update(mod2, ~1), test="Chisq")
+confint(mod2)
+exp(coef(mod2))
 
 #ATXN1 cancer risk model----
 PARK_LM<-PI %>%
@@ -158,11 +177,9 @@ step(object = modelo, direction = "backward", trace = 0)
 modelo<-glm(CANCER ~  I(ALELO2.SCA1^2), data=PARK_LM, family=binomial())
 summary(modelo)
 anova(modelo, update(modelo, ~1), test="Chisq")
-OR <- exp(coef(modelo))
-confint_OR <- exp(confint(modelo))
-print(OR)
-print(confint_OR)
 lrtest(modelo)
+confint(modelo)
+exp(coef(modelo))
 
 #Sex distribution
 # Male dataset
@@ -174,6 +191,7 @@ mod<-glm(formula = CANCER ~  I(ALELO2.SCA1^2), family = binomial(),
 summary(mod)
 anova(mod, update(mod, ~1), test="Chisq")
 confint(mod)
+exp(coef(mod))
 
 # Female dataset
 modelo_Female <- glm(CANCER ~ CODIGO.SCA1+ALELO1.SCA1+I(ALELO1.SCA1^2)+ALELO2.SCA1+I(ALELO2.SCA1^2)+ALELO1.SCA1:ALELO2.SCA1, data = filter(PARK_LM, SEXO == "Female"), family = binomial())
@@ -184,6 +202,7 @@ mod<-glm(formula = CANCER ~  ALELO2.SCA1 + I(ALELO2.SCA1^2), family = binomial()
 summary(mod)
 anova(mod, update(mod, ~1), test="Chisq")
 confint(mod)
+exp(coef(mod))
 #ATXN2 cancer risk model----
 PI_LM<-PI %>%
   filter(!is.na(ALELO1.SCA2)) %>%
@@ -195,15 +214,20 @@ step(object = mod, direction = "backward", trace = 0)
 mod<-glm(CANCER ~ ALELO1.SCA2 + ALELO2.SCA2 + I(ALELO2.SCA2^2), data=PI_LM, family=binomial())
 summary(mod)
 anova(mod, update(mod, ~1), test="Chisq") #0.008559 
+confint(mod)
+exp(coef(mod))
 
 #Sex distribution
 # Male dataset
 modelo_Male <- glm(CANCER ~ CODIGO.SCA2 +ALELO1.SCA2+I(ALELO1.SCA2^2)+ALELO2.SCA2+I(ALELO2.SCA2^2)+ALELO1.SCA2:ALELO2.SCA2, data = filter(PI_LM, SEXO == "Male"), family = binomial())
 summary(modelo_Male)
 step(object = modelo_Male, direction = "backward", trace = 0)
-summary(glm(formula = CANCER ~ CODIGO.SCA2 + ALELO1.SCA2 + ALELO2.SCA2 + 
+mod<-glm(formula = CANCER ~ CODIGO.SCA2 + ALELO1.SCA2 + ALELO2.SCA2 + 
               I(ALELO2.SCA2^2), family = binomial(), 
-            data = filter(PI_LM, SEXO == "Male")))
+            data = filter(PI_LM, SEXO == "Male"))
+summary(mod)
+confint(mod)
+exp(coef(mod))
 
 # Female dataset
 modelo_Female <- glm(CANCER ~ CODIGO.SCA2 +ALELO1.SCA2+I(ALELO1.SCA2^2)+ALELO2.SCA2+I(ALELO2.SCA2^2)+ALELO1.SCA2:ALELO2.SCA2, data = filter(PI_LM, SEXO == "Female"), family = binomial())
