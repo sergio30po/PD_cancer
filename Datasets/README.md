@@ -3,14 +3,19 @@ These datasets include various clinical and demographic variables for subjects w
 **Demographic Variables:**
 
 Sex: 1 = Male, 2 = Female
+
 Age at last visit or death
+
 Age at disease onset (only for iPD)
+
 Disease duration: calculated from onset to last visit or death (only for iPD)
+
 Survival Status: 
 0 = Censored (alive at last follow-up), 1 = Deceased
 
 Cancer Data:
 Cancer presence: 1 = Yes, 2 = No
+
 Timing of cancer in relation to PD onset: 1 = Cancer before PD, 2 = Cancer after PD
 
 Cancer Location Codes:
