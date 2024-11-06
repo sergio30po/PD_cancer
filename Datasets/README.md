@@ -1,6 +1,7 @@
+# Datasets description
 These datasets include various clinical and demographic variables for subjects with idiopathic Parkinson's disease (iPD) and Controls, as well as genetic markers and lifestyle factors, structured as follows:
 
-#Demographic Variables:
+## Demographic Variables:
 
 Sex: 1 = Male, 2 = Female
 
@@ -31,7 +32,7 @@ Drinking status:
 1 = Drinker (women >40g/day, men >60g/day of ethanol)
 2 = Non-drinker
 
-**Genetic Markers:**
+## Genetic Markers:
 Understood. Here’s how the genetic data structure and allele classification would look with **ALLELE.1** representing the shorter allele and **ALLELE.2** the longer allele:
 
 1. **HTT Gene**:
