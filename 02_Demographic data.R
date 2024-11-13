@@ -12,7 +12,7 @@ wilcox.test(EDAD.INICIO ~ CANCER, data = PI, conf.int=TRUE)
 
 mean_sd(PI, "CANCER.A.D.", "EDAD.INICIO", "Age at onset PD")
 dunn<-dunnTest(PI$EDAD.INICIO~PI$CANCER.A.D.,
-               method = "bonferroni")
+               method = "holm")
 
 print(dunn,dunn.test.results=T)
 
@@ -51,12 +51,7 @@ rowPercents(Table)
 my_function(Table)
 pairwise_fisher_test(Table, p.adjust.method="holm",conf.int = TRUE, detailed = T)
 
-
 Table<-TABLE(PI,"CANCER","SEXO","Sex distribution on cancer data")
-rowPercents(Table)
-my_function(Table)
-
-Table<-TABLE(PI,"CANCER.A.D.","SEXO","Sex distribution on cancer data")
 rowPercents(Table)
 my_function(Table)
 
@@ -70,9 +65,6 @@ rowPercents(Table)
 my_function(Table)
 pairwise_fisher_test(Table, p.adjust.method="holm",conf.int = TRUE, detailed = T)
 
-Table<-TABLE(PI,"CANCER.A.D.","BEBEDOR","Drinking data  on cancer data")
-rowPercents(Table)
-
 Table<-TABLE(DATASET,"PATOLOGIA","FUMADOR","Smoking data in PD and control cohorts")
 rowPercents(Table)
 my_function(Table)
@@ -82,7 +74,3 @@ Table<-TABLE(PI,"CANCER","FUMADOR","Smoking data  on cancer data")
 rowPercents(Table)
 my_function(Table)
 pairwise_fisher_test(Table, p.adjust.method="holm",conf.int = TRUE, detailed = T)
-
-Table<-TABLE(PI,"CANCER.A.D.","FUMADOR","Smoking data  on cancer data")
-rowPercents(Table)
-my_function(Table)

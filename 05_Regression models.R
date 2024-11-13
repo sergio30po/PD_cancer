@@ -5,6 +5,9 @@ rm(dataset_path)
 
 install.packages("lmtest")
 library(lmtest)
+install.packages("pROC")
+library(pROC)
+
 ##PD risk (binomial)----
 DATASETLM<-select(DATASET,-EDAD.INICIO,-EDAD.MUERTE,-DURACION,-SUPERVIVENCIA) 
 model <- glm(PATOLOGIA ~ CODIGO.HTT+ALELO.1+I(ALELO.1^2)+ALELO.2+I(ALELO.2^2)+ALELO.1:ALELO.2+CODIGO.SCA1 + ALELO1.SCA1+I(ALELO1.SCA1^2)+ALELO2.SCA1+I(ALELO2.SCA1^2)+ALELO1.SCA1:ALELO2.SCA1+CODIGO.SCA2 + ALELO1.SCA2+I(ALELO1.SCA2^2)+ALELO2.SCA2+I(ALELO2.SCA2^2)+ALELO1.SCA2:ALELO2.SCA2, data = DATASETLM, family = binomial)
@@ -68,6 +71,7 @@ summary(mod)
 lrtest(mod)
 confint(mod)
 exp(coef(mod))
+
 #Sex distribution
 # Male dataset
 modelo_Male <- glm(PATOLOGIA ~  ALELO1.SCA1+I(ALELO1.SCA1^2)+ALELO2.SCA1+I(ALELO2.SCA1^2)+ALELO1.SCA1:ALELO2.SCA1, data = filter(DATASETLM, SEXO == "Male"), family = binomial())
@@ -77,6 +81,7 @@ mod<-glm(PATOLOGIA ~ ALELO1.SCA1 + ALELO2.SCA1 + ALELO1.SCA1:ALELO2.SCA1, data =
 summary(mod)
 confint(mod)
 exp(coef(mod))
+
 # Female dataset
 modelo_Female <- glm(PATOLOGIA ~  ALELO1.SCA1+I(ALELO1.SCA1^2)+ALELO2.SCA1+I(ALELO2.SCA1^2)+ALELO1.SCA1:ALELO2.SCA1, data = filter(DATASETLM, SEXO == "Female"), family = binomial())
 summary(modelo_Female)
@@ -121,6 +126,7 @@ mod<-glm(PATOLOGIA ~ ALELO1.SCA2 + I(ALELO1.SCA2^2), family = binomial(),
 summary(mod)
 confint(mod)
 exp(coef(mod))
+
 
 ##Cancer risk (binomial)----
 
@@ -234,3 +240,61 @@ modelo_Female <- glm(CANCER ~ CODIGO.SCA2 +ALELO1.SCA2+I(ALELO1.SCA2^2)+ALELO2.S
 summary(modelo_Female)
 vif(modelo_Female)
 step(object = modelo_Female, direction = "backward", trace = 0)
+
+
+
+
+#Age of onset model----
+#Complete model
+PILM<-select(PI,-DURACION,-SUPERVIVENCIA,-EDAD.MUERTE,-PATOLOGIA,-HTT,-SCA1,-SCA2) 
+mod<-lm(EDAD.INICIO ~., data=PILM)
+summary(mod)
+mod2<-lm(EDAD.INICIO ~., data=na.omit(PILM))
+step(object = mod2, direction = "backward", trace = 0)
+modAIC<-lm(EDAD.INICIO ~CANCER.A.D. + FUMADOR + ALELO.1 + 
+             ALELO.2 + CODIGO.HTT + ALELO1.SCA1 + ALELO2.SCA1 + CODIGO.SCA2, data=PI)
+summary(modAIC)
+
+#STR model for age of onset
+PILM<-select(PI,EDAD.INICIO,ALELO.1,ALELO.2,ALELO1.SCA1,ALELO2.SCA1,ALELO1.SCA2,ALELO2.SCA2) 
+mod<-lm(EDAD.INICIO ~., data=PILM)
+summary(mod)
+mod2<-lm(EDAD.INICIO ~., data=na.omit(PILM))
+step(object = mod2, direction = "backward", trace = 0)
+
+#Quadratic terms STR model for age of onset
+PILM<-select(PI,EDAD.INICIO,ALELO.1,ALELO.2,CODIGO.HTT,ALELO1.SCA1,ALELO2.SCA1,CODIGO.SCA1,ALELO1.SCA2,ALELO2.SCA2,CODIGO.SCA2) 
+mod2<-lm(EDAD.INICIO ~CODIGO.HTT+ALELO.1+I(ALELO.1^2)+ALELO.2+I(ALELO.2^2)+ALELO.1:ALELO.2+CODIGO.SCA1 + ALELO1.SCA1+I(ALELO1.SCA1^2)+ALELO2.SCA1+I(ALELO2.SCA1^2)+ALELO1.SCA1:ALELO2.SCA1+CODIGO.SCA2 + ALELO1.SCA2+I(ALELO1.SCA2^2)+ALELO2.SCA2+I(ALELO2.SCA2^2)+ALELO1.SCA2:ALELO2.SCA2, data=na.omit(PILM))
+summary(mod2)
+step(object = mod2, direction = "backward", trace = 0)
+mod2<-lm(EDAD.INICIO ~ALELO.1 + I(ALELO.1^2) + ALELO2.SCA2 + 
+           I(ALELO2.SCA2^2), data=PILM)
+summary(mod2)
+
+#HTT age of onset model----
+PILM<-select(PI,EDAD.INICIO,ALELO.1,ALELO.2,CODIGO.HTT) 
+mod2<-lm(EDAD.INICIO ~CODIGO.HTT+ALELO.1+I(ALELO.1^2)+ALELO.2+I(ALELO.2^2)+ALELO.1:ALELO.2, data=na.omit(PILM))
+summary(mod2)
+step(object = mod2, direction = "backward", trace = 0)
+modelo<-lm(formula = EDAD.INICIO ~ ALELO.1 + I(ALELO.1^2), data = PILM)
+vif(modelo)
+
+anova_result <- aov(EDAD.INICIO ~ ALELO.1, data = PILM)
+summary(anova_result)
+anova_result <- aov(EDAD.INICIO ~ I(ALELO.1^2), data = PILM)
+summary(anova_result)
+
+#ATXN1 age of onset model----
+PILM<-select(PI,EDAD.INICIO,ALELO1.SCA1,ALELO2.SCA1,CODIGO.SCA1) 
+mod2<-lm(EDAD.INICIO ~CODIGO.SCA1 +ALELO1.SCA1+I(ALELO1.SCA1^2)+ALELO2.SCA1+I(ALELO2.SCA1^2)+ALELO1.SCA1:ALELO2.SCA1, data=na.omit(PILM))
+summary(mod2)
+step(object = mod2, direction = "backward", trace = 0)
+summary(lm(formula = EDAD.INICIO ~ ALELO1.SCA1 + ALELO2.SCA1 + ALELO1.SCA1:ALELO2.SCA1,data = PILM))
+
+#ATXN2 age of onset model----
+PILM<-select(PI,EDAD.INICIO,ALELO1.SCA2,ALELO2.SCA2,CODIGO.SCA2) 
+mod2<-lm(EDAD.INICIO ~CODIGO.SCA2 +ALELO1.SCA2+I(ALELO1.SCA2^2)+ALELO2.SCA2+I(ALELO2.SCA2^2)+ALELO1.SCA2:ALELO2.SCA2, data=na.omit(PILM)) 
+summary(mod2) 
+step(object = mod2, direction = "backward", trace = 0)
+summary(lm(formula = EDAD.INICIO ~ ALELO1.SCA2 + I(ALELO1.SCA2^2), 
+           data = PILM))

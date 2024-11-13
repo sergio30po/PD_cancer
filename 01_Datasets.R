@@ -95,7 +95,7 @@ ruta_PI <- file.choose()  # This will open a file dialog for selecting the file
 PI <- read_excel(ruta_PI)
 PI <- PI[-1,]
 rm(ruta_PI)
-
+PI<-select(PI,-Localizacion,-Codigo.localizacion)
 # Select and load CONTROL dataset
 cat("Choose Control dataset:\n")
 ruta_CONTROL <- file.choose()  # This will open a file dialog for selecting the file
@@ -106,9 +106,8 @@ rm(ruta_CONTROL)
 #Categorical variables-----
 PI$SEXO<- factor(PI$SEXO,labels=c("Male","Female"))
 PI$CODIGO.HTT<- factor(PI$CODIGO.HTT,labels=c("Normal","IA","Expanded"))
-PI$CODIGO.APOE<- factor(PI$CODIGO.APOE,labels=c("e4-","e4+"))
-PI$CODIGO.SCA1<- factor(PI$CODIGO.SCA1,labels=c("Normal","IA","Expanded"))
-PI$CODIGO.SCA2<- factor(PI$CODIGO.SCA2,labels=c("Normal","IA","Expanded"))
+PI$CODIGO.SCA1<- factor(PI$CODIGO.SCA1,labels=c("Normal","IA"))
+PI$CODIGO.SCA2<- factor(PI$CODIGO.SCA2,labels=c("Normal","IA"))
 PI$SUPERVIVENCIA<- factor(PI$SUPERVIVENCIA,labels=c("censored","exitus"))
 PI$CANCER<- factor(PI$CANCER,labels=c("Yes","No"))
 PI$CANCER.A.D.<- factor(PI$CANCER.A.D.,labels=c("Before PD","After PD","No"))
@@ -121,7 +120,6 @@ CONTROL$CANCER<- factor(CONTROL$CANCER,labels=c("Controls"))
 CONTROL$CODIGO.HTT<- factor(CONTROL$CODIGO.HTT,labels=c("Normal","IA","Expanded"))
 CONTROL$CODIGO.SCA1<- factor(CONTROL$CODIGO.SCA1,labels=c("Normal","IA"))
 CONTROL$CODIGO.SCA2<- factor(CONTROL$CODIGO.SCA2,labels=c("Normal","IA"))
-CONTROL$CODIGO.APOE<- factor(CONTROL$CODIGO.APOE,labels=c("e4-","e4+"))
 CONTROL$FUMADOR<- factor(CONTROL$FUMADOR,labels=c("Yes","No"))
 CONTROL$PATOLOGIA<- factor(CONTROL$PATOLOGIA,labels=c("Controls"))
 
@@ -145,7 +143,7 @@ CONTROL$ALELO2.SCA1<- as.numeric(CONTROL$ALELO2.SCA1)
 CONTROL$ALELO1.SCA2<- as.numeric(CONTROL$ALELO1.SCA2)
 CONTROL$ALELO2.SCA2<- as.numeric(CONTROL$ALELO2.SCA2)
 # Combine the two datasets
-DATASET <- rbind.data.frame(select(PI,-Localizacion,-Codigo.localizacion), CONTROL)
+DATASET <- rbind.data.frame(PI, CONTROL)
 
 
 # Cancer datasets----
