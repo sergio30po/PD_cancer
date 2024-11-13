@@ -47,6 +47,7 @@ mod<-glm(PATOLOGIA ~ ALELO.1 + I(ALELO.1^2) +
 summary(mod)
 confint(mod)
 exp(coef(mod))
+
 # Female dataset
 modelo_Female <- glm(PATOLOGIA ~ ALELO.1+I(ALELO.1^2)+ALELO.2+I(ALELO.2^2)+ALELO.1:ALELO.2, data = filter(DATASETLM, SEXO == "Female"), family = binomial())
 summary(modelo_Female)
